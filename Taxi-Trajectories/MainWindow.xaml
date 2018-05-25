@@ -28,9 +28,10 @@
         <Button Content="展示" Margin="0,28,48,0" Click="Button_Click" RenderTransformOrigin="0.556,4.209" Width="132" HorizontalAlignment="Right" Height="43" VerticalAlignment="Top"/>
         <WebBrowser x:Name="Map"  Margin="48,108,48,39"/>
         <Button Content="文件加载" Margin="48,28,0,0" Click="Button_Click_1" Height="43" VerticalAlignment="Top" HorizontalAlignment="Left" Width="132"/>
-        <TextBox Name="Id"  HorizontalAlignment="Right" Margin="0,28,210,0" TextWrapping="Wrap" Width="109" Height="43" VerticalAlignment="Top" FontSize="20" Text="1"/>
-        <Button Content="清空显示" Height="43" Margin="244,28,0,0" VerticalAlignment="Top" Click="Button_Click_2" RenderTransformOrigin="0.697,0.605" HorizontalAlignment="Left" Width="122"/>
-        <Button Content="全部展示" HorizontalAlignment="Right" Height="43" Margin="0,28,358,0" VerticalAlignment="Top" Width="118" Click="Button_Click_3"/>
+        <TextBox x:Name="Id_1"  HorizontalAlignment="Right" Margin="0,28,306,0" TextWrapping="Wrap" Width="68" Height="43" VerticalAlignment="Top" FontSize="20" Text="1"/>
+        <Button Content="清空显示" Height="43" Margin="212,28,0,0" VerticalAlignment="Top" Click="Button_Click_2" RenderTransformOrigin="0.697,0.605" HorizontalAlignment="Left" Width="122"/>
+        <Button Content="全部展示" HorizontalAlignment="Right" Height="43" Margin="0,28,407,0" VerticalAlignment="Top" Width="118" Click="Button_Click_3"/>
+        <TextBox x:Name="Id_2"  HorizontalAlignment="Right" Margin="0,28,208,0" TextWrapping="Wrap" Width="68" Height="43" VerticalAlignment="Top" FontSize="20" Text="10357"/>
 
     </Grid>
 </Window>

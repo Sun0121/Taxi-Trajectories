@@ -34,20 +34,11 @@ namespace Taxi_Trajectories
             Map.Source = new Uri(Path + "\\Bmap.html");
             used = false;
             ptrCar.obtainPath(Path);
-            carNum = 0;
-            hasShowed = new bool[MAX_SHOW];
-            for (int i = 1; i < MAX_SHOW; i++) hasShowed[i] = false;
         }
 
-        private void show(CMetaData[] e, int carId)
+        private void Show(String strShow)
         {
-            if (hasShowed[carId] == true) return;
-            hasShowed[carId] = true;
-            for (int i = 0; i < e.Length; i++)
-            {
-                Map.InvokeScript("addLine", new object[] {e[i].longitude, e[i].dimension});
-            }
-            Map.InvokeScript("showLine");
+            Map.InvokeScript("showLine", new object[] { strShow });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)//展示按钮
@@ -57,14 +48,14 @@ namespace Taxi_Trajectories
                 MessageBox.Show("未加载文件");
                 return;
             }
-            CMetaData[] tmp = ptrCar.Traverse(int.Parse(Id.Text));
-            if (tmp.Length == 0)
+            if (int.Parse(Id_2.Text) - int.Parse(Id_1.Text) < 0)
             {
                 MessageBox.Show("输入超出范围");
                 return;
             }
-            MessageBox.Show("添加数据量：" + tmp.Length.ToString());
-            show(tmp, int.Parse(Id.Text));
+            String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
+            //MessageBox.Show("添加数据量：" + tmp.Length.ToString());
+            Show(str);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -94,18 +85,7 @@ namespace Taxi_Trajectories
                 MessageBox.Show("未加载文件");
                 return;
             }
-            for (int i=1;i<=carNum;i++)
-            {
-                CMetaData[] tmp = ptrCar.Traverse(i);
-                if (MessageBox.Show("是否暂时第" + i + "辆出租车信息？", "展示", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    show(tmp, i);
-                }
-                else
-                {
-                    break;
-                }                
-            }
+            Show(ptrCar.Traverse(1,10357));
         }
     }
 }

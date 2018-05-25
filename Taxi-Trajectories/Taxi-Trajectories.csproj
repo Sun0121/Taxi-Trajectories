@@ -94,6 +94,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CLR_link\CLR_link.vcxproj">
       <Project>{875948f3-02a0-49e3-a4f0-c5aa13874e83}</Project>
       <Name>CLR_link</Name>

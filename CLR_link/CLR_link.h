@@ -2,22 +2,18 @@
 
 #pragma once
 #include "..\CppGetData\CppGetData.h"
+#include <iostream>
+#include <fstream>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+#include <map>
+#include <sstream>
 
 using namespace System;
 using namespace Runtime::InteropServices;
 
 namespace CLR_link {
-	public ref class CMetaData
-	{
-	public:
-		int id, year, month, day, hour, minue, sec;
-		double longitude, dimension;
-		CMetaData() {}
-		CMetaData(MetaData &e) {
-			id = e.id, year = e.year, month = e.month, day = e.day, hour = e.hour, minue = e.minue, sec = e.sec;
-			longitude = e.longitude, dimension = e.dimension;
-		}
-	};
 	public ref class Class1
 	{
 	public:
@@ -25,16 +21,12 @@ namespace CLR_link {
 		~Class1() { this->!Class1(); }
 		!Class1() { delete ptr; }
 		int roadFromFile() {
-			return ptr->roading();
+			return ptr->LoadData();
 		}
-		cli::array<CMetaData ^> ^  Traverse(int carInd) {
-			cli::array<CMetaData ^> ^ showList = gcnew cli::array<CMetaData ^>(ptr->carData[carInd].size());
-			int x = ptr->carData[carInd].size();
-			for (int i = 0; i < ptr->carData[carInd].size(); i++)
-			{
-				CMetaData ^ tmp = gcnew CMetaData(ptr->carData[carInd][i]);
-				showList[i] = tmp;
-			}
+		String ^ Traverse(int start,int end) {
+			//cli::array<CMetaData ^> ^ showList = gcnew cli::array<CMetaData ^>(ptr->carData[carInd].size());
+			ptr->showTrack(start,end);
+			String ^ showList = gcnew String(ptr->tranShowMap().c_str());
 			return showList;
 		}
 		void obtainPath(String ^ pa) {
