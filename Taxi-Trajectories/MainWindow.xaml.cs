@@ -58,7 +58,7 @@ namespace Taxi_Trajectories
             Show(str);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)//文件加载
         {
             if (used == true)
             {

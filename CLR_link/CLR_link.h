@@ -9,7 +9,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
-
+#include <algorithm>
 using namespace System;
 using namespace Runtime::InteropServices;
 
