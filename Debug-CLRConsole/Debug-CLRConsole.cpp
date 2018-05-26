@@ -9,7 +9,7 @@ int main(array<System::String ^> ^args)
 {
 	Class1 tmp;
 	tmp.roadFromFile();
-	cli::array<CMetaData ^> ^ showList = tmp.Traverse(2);
-    Console::WriteLine(showList->Length);
+	String ^ str = tmp.Traverse(1, 100);
+    Console::WriteLine(str);
     return 0;
 }

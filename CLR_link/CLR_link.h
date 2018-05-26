@@ -24,7 +24,6 @@ namespace CLR_link {
 			return ptr->LoadData();
 		}
 		String ^ Traverse(int start,int end) {
-			//cli::array<CMetaData ^> ^ showList = gcnew cli::array<CMetaData ^>(ptr->carData[carInd].size());
 			ptr->showTrack(start,end);
 			String ^ showList = gcnew String(ptr->tranShowMap().c_str());
 			return showList;

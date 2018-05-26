@@ -13,7 +13,6 @@ namespace Taxi_Trajectories
         private bool used;
         private String Path;
         private int carNum;
-        private bool[] hasShowed;
         public MainWindow()
         {
             InitializeComponent();
@@ -21,6 +20,7 @@ namespace Taxi_Trajectories
             Map.Source = new Uri(Path + "\\Bmap.html");
             used = false;
             ptrCar.obtainPath(Path);
+            carNum = 0;
         }
 
         private void Show(String strShow)
@@ -41,7 +41,6 @@ namespace Taxi_Trajectories
                 return;
             }
             String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
-            //MessageBox.Show("添加数据量：" + tmp.Length.ToString());
             Show(str);
         }
 
@@ -61,7 +60,6 @@ namespace Taxi_Trajectories
 
         private void Button_Click_2(object sender, RoutedEventArgs e)//清空数据
         {
-            for (int i = 1; i < MAX_SHOW; i++) hasShowed[i] = false;
             Map.InvokeScript("showClear");
         }
 
