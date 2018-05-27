@@ -25,7 +25,7 @@ namespace Taxi_Trajectories
 
         private void Show(String strShow)
         {
-            Map.InvokeScript("showLine", new object[] { strShow });
+            return;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)//展示按钮
@@ -41,7 +41,8 @@ namespace Taxi_Trajectories
                 return;
             }
             String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
-            Show(str);
+            System.IO.File.WriteAllText(@"F:\test.txt", str);
+            Map.InvokeScript("showAllLine", new object[] { str });
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)//文件加载

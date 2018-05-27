@@ -9,7 +9,7 @@ int main(array<System::String ^> ^args)
 {
 	Class1 tmp;
 	tmp.roadFromFile();
-	String ^ str = tmp.Traverse(1, 100);
+	String ^ str = tmp.Traverse(1, 1);
     Console::WriteLine(str);
     return 0;
 }
