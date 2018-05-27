@@ -43,12 +43,11 @@ namespace Taxi_Trajectories
             }
             String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
             System.IO.File.WriteAllText(@"F:\test.txt", str);
-            Map.InvokeScript("showAllLine", new object[] { str });
+            Map.InvokeScript("showAllLine");
             /*
             int len = str.Length, x = len/SPLIT;
             MessageBox.Show(len.ToString());
             char[] destination = new char[SPLIT];
-
             for (int i = 0; i < x; i++)
             {
                 //MessageBox.Show((i * SPLIT).ToString());
@@ -75,8 +74,6 @@ namespace Taxi_Trajectories
 
         private void Button_Click_1(object sender, RoutedEventArgs e)//文件加载
         {
-            //Map.InvokeScript("getString", new object[] { "aaa" });
-            //Map.InvokeScript("getString", new object[] { "bbb" });
             if (used == true)
             {
                 MessageBox.Show("您已成功加载过，无需再次加载");
@@ -84,7 +81,7 @@ namespace Taxi_Trajectories
             else
             {
                 carNum = ptrCar.roadFromFile();
-                MessageBox.Show("加载成功，加载文件数为"+carNum);
+                MessageBox.Show("加载成功，加载汽车数为"+carNum);
                 used = true;
             }
         }
