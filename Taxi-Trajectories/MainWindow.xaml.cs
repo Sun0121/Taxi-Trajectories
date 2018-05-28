@@ -8,6 +8,7 @@ namespace Taxi_Trajectories
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int SPLIT = 500;
         private const int MAX_SHOW = 1000;
         private Class1 ptrCar=new Class1();
         private bool used;
@@ -25,7 +26,7 @@ namespace Taxi_Trajectories
 
         private void Show(String strShow)
         {
-            Map.InvokeScript("showLine", new object[] { strShow });
+            return;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)//展示按钮
@@ -41,7 +42,34 @@ namespace Taxi_Trajectories
                 return;
             }
             String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
-            Show(str);
+            System.IO.File.WriteAllText(@"F:\test.txt", str);
+            Map.InvokeScript("showAllLine");
+            /*
+            int len = str.Length, x = len/SPLIT;
+            MessageBox.Show(len.ToString());
+            char[] destination = new char[SPLIT];
+            for (int i = 0; i < x; i++)
+            {
+                //MessageBox.Show((i * SPLIT).ToString());
+                //MessageBox.Show((i * SPLIT + SPLIT).ToString());
+                str.CopyTo(i * SPLIT, destination, 0, SPLIT);
+                //destination[SPLIT] = '\0';
+                //MessageBox.Show(new string(destination));
+                Map.InvokeScript("getString", new object[] { new string(destination) });
+            }
+            if (len%SPLIT!=0)
+            {
+                //MessageBox.Show((x * SPLIT).ToString());
+                //MessageBox.Show((x * SPLIT + len % SPLIT).ToString());
+                char[] des = new char[len % SPLIT];
+                str.CopyTo(x * SPLIT, des, 0, len % SPLIT);
+                //des[len % SPLIT] = '\0';
+                //MessageBox.Show(new string(destination));
+                Map.InvokeScript("getString", new object[] { new string(des) });
+            }
+            Map.InvokeScript("showAllLine");
+            Map.InvokeScript("deleteString");
+            */
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)//文件加载
@@ -53,7 +81,7 @@ namespace Taxi_Trajectories
             else
             {
                 carNum = ptrCar.roadFromFile();
-                MessageBox.Show("加载成功，加载文件数为"+carNum);
+                MessageBox.Show("加载成功，加载汽车数为"+carNum);
                 used = true;
             }
         }
