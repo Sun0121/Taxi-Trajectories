@@ -43,7 +43,7 @@ namespace Taxi_Trajectories
             }
             String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
             System.IO.File.WriteAllText(@"F:\test.txt", str);
-            Map.InvokeScript("showAllLine");
+            Map.InvokeScript("showAllLine", str);
             /*
             int len = str.Length, x = len/SPLIT;
             MessageBox.Show(len.ToString());

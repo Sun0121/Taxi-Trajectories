@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+	#allmap {width: 100%; height:90%; overflow: hidden;}
+	#result {width:100%;font-size:12px;}
+	dl,dt,dd,ul,li{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	p{font-size:12px;}
+	dt{
+		font-size:14px;
+		font-family:"微软雅黑";
+		font-weight:bold;
+		border-bottom:1px dotted #000;
+		padding:5px 0 5px 5px;
+		margin:5px 0;
+	}
+	dd{
+		padding:5px 0 0 5px;
+	}
+	li{
+		line-height:28px;
+	}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=KjtwsnklXrlyIReLEvb32EeowTcILSrq"></script>
+	<!--加载鼠标绘制工具-->
+	<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+	<!--加载检索信息窗口-->
+	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
+	
+	<script type="text/javascript" src="F://carData.js"></script>
+	
+	
+	<title>地图展示</title>
+</head>
+<body>
+	<div id="allmap" style="overflow:hidden;zoom:1;position:relative;">	
+		<div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+	</div>
+	<div id="result">
+		<!--<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>-->
+		<input type="button" value="清除所有覆盖物" onclick="showAllLine()"/>
+	</div>
+	<script type="text/javascript">
+		
+	
+    var map = new BMap.Map('map');
+    var poi = new BMap.Point(116.307852,40.057031);
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);  // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true);//开启鼠标滚轮缩放
+	
+	var pois = [];//记录点的数组
+	var carData="";
+		
+	function addPoint(x,y){
+		pois.push(new BMap.Point(x,y));
+		
+	}
+	
+	
+	//展示全部线
+	function showAllLine(car){
+		window.alert(car);
+        window.alert(car.length);
+	    
+		// 添加海量点数据
+		var size;
+		var carData=eval('('+car+')');
+		for(var i=0,l=carData.length;i<l;i++){
+			//window.alert(i);
+			for(var key in carData[i]){
+				//window.alert("in");
+				//window.alert(key);
+				for(var j=0,ll=carData[i][key].length;j<ll;j++){
+					//window.alert(j);
+					pois.push(new BMap.Point((carData[i][key][j][0]/1000), (carData[i][key][j][1]/1000)));
+					pois.push(new BMap.Point((carData[i][key][j][2]/1000), (carData[i][key][j][3]/1000)));
+					//window.alert(carData[i][key][j][0]/1000);
+					//window.alert(carData[i][key][j][1]/1000);
+					size=carData[i][key][j][4];
+					//window.alert(size);
+					var polyline =new BMap.Polyline(pois, {
+		           //enableEditing: false,//是否启用线编辑，默认为false
+		            enableClicking: false,//是否响应点击事件，默认为true
+		           //icons:[icons],
+			       strokeWeight:1,//折线的宽度，以像素为单位
+		           strokeOpacity: 1,//折线的透明度，取值范围0 - 1
+		           strokeColor:'#FF0000' //折线颜色
+					});
+			       polyline.setStrokeWeight(3);
+			       map.addOverlay(polyline); 
+				   pois.length=0;
+				}
+			}
+		}
+		//console.log(pois.length);
+		
+	}
+	
+	
+	function getString(str){
+		
+			carData=carData.concat(str);
+			
+			
+	}
+		
+	
+	function deleteString(){
+		
+		carData="";
+	}
+	
+	//展示点,数组中存储了数据
+	function showPoint(carData){
+		
+		/*
+		var options = {
+			//size: BMAP_POINT_SIZE_SMALLER,
+			size:BMAP_POINT_SIZE_SMALL,
+            shape: BMAP_POINT_SHAPE_CIRCLE,
+            color: '#FF3030'
+        }
+		var pointCollection = new BMap.PointCollection(pois, options);  // 初始化PointCollection
+		map.addOverlay(pointCollection);  // 添加Overlay
+		*/
+		
+		/*var carData = '[{"data":[[116510,39935],[116515,39910],[116470,39910],[116470,39920],[116470,39905],[116455,39905],[116505,39910],[116495,39910],[116455,39865],[116490,39875],[116500,39865],[116500,39860],[116495,39875],[116465,39880],[116455,39895],[116445,39905],[116440,39915],[116445,39925]]},{"data1":[[116440,39925],[116435,39930],[116435,39950],[116440,39950],[116440,39960],[116440,39955],[116445,39955],[116455,39950],[116455,39945],[116455,39930],[116455,39925],[116495,39915],[116495,39920],[116510,39925],[116505,39920],[116480,39920],[116475,39905],[116465,39900],[116455,39900]]}]';
+		*/
+		
+		
+		
+	
+		
+		var jsonDate=eval('('+carData+')');
+	
+		// 添加海量点数据
+		
+		for(var i=0,l=jsonDate.length;i<l;i++){
+			for(var key in jsonDate[i]){
+				for(var j=0,ll=jsonDate[i][key].length;j<ll;j++){
+					console.log((jsonDate[i][key][j][0]/1000)+" "+(jsonDate[i][key][j][1]/1000)+'\n');
+					pois.push(new BMap.Point((jsonDate[i][key][j][0]/1000), (jsonDate[i][key][j][1]/1000)));
+				}
+				console.log("\n");
+				
+			}
+		}
+
+		if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
+        var options = {
+            size: BMAP_POINT_SIZE_SMALL,
+            shape:BMAP_POINT_SHAPE_CIRCLE,
+            color: '#FF3030'
+        }
+        var pointCollection = new BMap.PointCollection(pois, options);  // 初始化PointCollection
+        pointCollection.addEventListener('click', function (e) {
+          alert('单击点的坐标为：' + e.point.lng + ',' + e.point.lat);  // 监听点击事件
+        });
+        map.addOverlay(pointCollection);  // 添加Overlay
+    } else {
+        alert('请在chrome、safari、IE8+以上浏览器查看本示例');
+    }
+		console.log(pois.length);
+	}
+
+	//展示一辆车的线
+	function showLine(){
+		
+		var polyline =new BMap.Polyline(pois, {
+		//enableEditing: false,//是否启用线编辑，默认为false
+		enableClicking: false,//是否响应点击事件，默认为true
+		//icons:[icons],
+	    strokeWeight:1,//折线的宽度，以像素为单位
+	    strokeOpacity: 1,//折线的透明度，取值范围0 - 1
+		strokeColor:'#FF3030' //折线颜色
+	    });
+	    map.addOverlay(polyline); 
+	    console.log(pois.length);
+		
+	}
+	
+	//清除点
+	function clearPoint(){
+		pois.length = 0;
+		map.clearOverlays();
+	}
+	
+    
+    var overlays = [];//
+		
+	var data=new Array();
+	
+	var overlaycomplete = function(e){
+		
+		var arr=new Array();
+		var j=0;
+        overlays.push(e.overlay);
+		
+        var path = e.overlay.getPath();//Array<Point> 返回多边型的点数组
+        for(var i=0;i<path.length;i++){
+            console.log("lng:"+path[i].lng+"\n lat:"+path[i].lat);
+			if((i%2)==0)
+			{
+				arr[j]=path[i].lng;
+				j++;
+				//console.log("1. "+arr[j]);
+				
+				arr[j]=path[i].lat;
+				j++;
+				//console.log("2. "+arr[j]);
+				
+			}
+        }
+		data=arr;
+		
+    };
+	
+	//返回包含所画框的两个点的经纬度
+	function backPoint(){
+		backlng1();
+		backlat1();
+		backlng2();
+		backlat2();
+       return data;
+		
+	}
+	//返回左上角的点的经度
+	function backlng1(){
+		
+		return data[0]
+	}
+	
+	//返回左上角的点的纬度	
+	function backlat1(){
+		
+		return data[1];
+	}
+		
+	//返回右下角的点的经度	
+	function backlng2(){
+		
+		return data[2]
+	}
+		
+	//返回右下角的点的纬度
+	function backlat2(){
+		
+		return data[3];
+	}
+	
+    var styleOptions = {
+        strokeColor:"black",    //边线颜色。
+        fillColor:"white",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 1,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'solid' //边线的样式，solid或dashed。
+    }
+	
+    //实例化鼠标绘制工具
+    var drawingManager = new BMapLib.DrawingManager(map, {
+        isOpen: false, //是否开启绘制模式
+        enableDrawingTool: true, //是否显示工具栏
+        drawingToolOptions: {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            offset: new BMap.Size(5, 5), //偏离值
+			drawingModes:[
+                BMAP_DRAWING_RECTANGLE 
+            ]
+        },
+        circleOptions: styleOptions, //圆的样式
+        polylineOptions: styleOptions, //线的样式
+        polygonOptions: styleOptions, //多边形的样式
+        rectangleOptions: styleOptions //矩形的样式
+    });  
+		
+	 //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+		
+    function clearAll() {
+		for(var i = 0; i < overlays.length; i++){
+            map.removeOverlay(overlays[i]);
+        }
+        overlays.length = 0   
+    }
+	
+	
+	
+	
+	//第二种解析方式	
+	function jsonTest1(str){
+		
+		var str='[{"type":"1","switch":"1","startTime":"1405405793","endTime":"1405664993","signDays":"3","awardCoin":"100000","desc":"desc"},{"type":"2","startTime":"1","endTime":"0","dropRate":"20","dropNumRate":"20"}]';
+		
+		var test=eval('('+str+')');
+		
+		console.log(test.length+'\n');
+		
+		for(var i=0,l=test.length;i<l;i++){
+			for(var key in test[i]){
+				console.log(key+" "+test[i][key]+" ");
+				//console.log(typeof(test[i][key])+"\n");
+			}
+			console.log('\n');   
+		}
+	}
+	
+	
+		
+	function createHailiangPoint(){
+		
+		var carData = '[{"data":[[116.51,39.935],[116.515,39.91],[116.47,39.91],[116.47,39.92],[116.47,39.905],[116.455,39.905],[116.505,39.91],[116.495,39.91],[116.455,39.865],[116.49,39.875],[116.5,39.865],[116.5,39.86],[116.495,39.875],[116.465,39.88],[116.455,39.895],[116.445,39.905],[116.44,39.915],[116.445,39.925]]},{"data1":[[116.44,39.925],[116.435,39.93],[116.435,39.95],[116.44,39.95],[116.44,39.96],[116.44,39.955],[116.445,39.955],[116.455,39.95],[116.455,39.945],[116.455,39.93],[116.455,39.925],[116.495,39.915],[116.495,39.92],[116.51,39.925],[116.505,39.92],[116.48,39.92],[116.475,39.905],[116.465,39.9],[116.455,39.9],[116.45,39.905],[116.44,39.91],[116.45,39.875],[116.47,39.87],[116.465,39.87]]}]';
+	
+		
+		var jsonDate=eval('('+carData+')');
+	
+		// 添加海量点数据
+		
+		for(var i=0,l=jsonDate.length;i<l;i++){
+			for(var key in jsonDate[i]){
+				for(var j=0,ll=jsonDate[i][key].length;j<ll;j++){
+					console.log(jsonDate[i][key][j][0]+" "+jsonDate[i][key][j][1]+'\n');
+					pois.push(new BMap.Point(jsonDate[i][key][j][0], jsonDate[i][key][j][1]));
+				}
+				console.log("\n");
+				
+			}
+		}
+
+		if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
+        var options = {
+            size: BMAP_POINT_SIZE_SMALL,
+            shape:BMAP_POINT_SHAPE_CIRCLE,
+            color: '#FF3030'
+        }
+        var pointCollection = new BMap.PointCollection(pois, options);  // 初始化PointCollection
+        pointCollection.addEventListener('click', function (e) {
+          alert('单击点的坐标为：' + e.point.lng + ',' + e.point.lat);  // 监听点击事件
+        });
+        map.addOverlay(pointCollection);  // 添加Overlay
+    } else {
+        alert('请在chrome、safari、IE8+以上浏览器查看本示例');
+    }
+		
+	}
+</script>
+</body>
+</html>
