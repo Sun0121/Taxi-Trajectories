@@ -24,11 +24,6 @@ namespace Taxi_Trajectories
             carNum = 0;
         }
 
-        private void Show(String strShow)
-        {
-            return;
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)//展示按钮
         {
             if (carNum==0)
@@ -42,7 +37,7 @@ namespace Taxi_Trajectories
                 return;
             }
             String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
-            System.IO.File.WriteAllText(@"F:\test.txt", str);
+            //System.IO.File.WriteAllText(@"F:\test.txt", str);
             Map.InvokeScript("showAllLine", str);
             /*
             int len = str.Length, x = len/SPLIT;
@@ -90,15 +85,22 @@ namespace Taxi_Trajectories
         {
             Map.InvokeScript("showClear");
         }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        
+        private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             if (carNum == 0)
             {
                 MessageBox.Show("未加载文件");
                 return;
             }
-            Show(ptrCar.Traverse(1,10357));
+            int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
+            int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
+            int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
+            int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
+            String str = ptrCar.carCount(p0_x,p0_y,p1_x,p1_y,int.Parse(time_0.Text), int.Parse(time_1.Text));
+            int carCountNum = ptrCar.getCarCountNum();
+            //System.IO.File.WriteAllText(@"F:\test.txt", str);
+            Map.InvokeScript("showAllLine", new object[] { str, carCountNum });
         }
     }
 }
