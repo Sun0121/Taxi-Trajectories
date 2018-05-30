@@ -24,25 +24,26 @@ namespace Taxi_Trajectories
             carNum = 0;
         }
 
-        private void Show(String strShow)
+        private bool isRoaded()
         {
-            return;
+            if (carNum == 0)
+            {
+                MessageBox.Show("未加载文件");
+                return false;
+            }
+            return true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)//展示按钮
         {
-            if (carNum==0)
-            {
-                MessageBox.Show("未加载文件");
-                return;
-            }
+            if (!isRoaded()) return;
             if (int.Parse(Id_2.Text) - int.Parse(Id_1.Text) < 0)
             {
                 MessageBox.Show("输入超出范围");
                 return;
             }
             String str = ptrCar.Traverse(int.Parse(Id_1.Text),int.Parse(Id_2.Text));
-            System.IO.File.WriteAllText(@"F:\test.txt", str);
+            //System.IO.File.WriteAllText(@"F:\test.txt", str);
             Map.InvokeScript("showAllLine", str);
             /*
             int len = str.Length, x = len/SPLIT;
@@ -86,19 +87,52 @@ namespace Taxi_Trajectories
             }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)//清空数据
+        
+        private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            Map.InvokeScript("showClear");
+            if (!isRoaded()) return;
+            int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
+            int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
+            int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
+            int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
+            String str = ptrCar.carCount(p0_x,p0_y,p1_x,p1_y,int.Parse(time_0.Text), int.Parse(time_1.Text));
+            int carCountNum = ptrCar.getCarCountNum();
+            //System.IO.File.WriteAllText(@"F:\test.txt", str);
+            Map.InvokeScript("showPoint", new object[] { str, carCountNum });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (carNum == 0)
-            {
-                MessageBox.Show("未加载文件");
-                return;
-            }
-            Show(ptrCar.Traverse(1,10357));
+            if (!isRoaded()) return;
+            int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
+            int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
+            int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
+            int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
+            int p2_x = (int)(long.Parse(pos_2.Text) / 100000);
+            int p2_y = (int)(long.Parse(pos_2.Text) % 100000);
+            int p3_x = (int)(long.Parse(pos_3.Text) / 100000);
+            int p3_y = (int)(long.Parse(pos_3.Text) % 100000);
+
+            String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
+
+            Map.InvokeScript("showChart", new object[] { str });
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            if (!isRoaded()) return;
+            int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
+            int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
+            int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
+            int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
+            int p2_x = (int)(long.Parse(pos_2.Text) / 100000);
+            int p2_y = (int)(long.Parse(pos_2.Text) % 100000);
+            int p3_x = (int)(long.Parse(pos_3.Text) / 100000);
+            int p3_y = (int)(long.Parse(pos_3.Text) % 100000);
+
+            String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
+
+            Map.InvokeScript("showChart", new object[] { str });
         }
     }
 }
