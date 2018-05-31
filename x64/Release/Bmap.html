@@ -69,8 +69,8 @@
 	//展示全部线
 	function showAllLine(car){
 		window.alert(car);
-        		window.alert(car.length);
-	 
+        window.alert(car.length);
+	    
 		// 添加海量点数据
 		var size;
 		var carData=eval('('+car+')');
@@ -154,12 +154,11 @@
 				
 			}
 		}
-
 		if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
         var options = {
             size: BMAP_POINT_SIZE_SMALL,
             shape:BMAP_POINT_SHAPE_CIRCLE,
-            color: '#'+(Math.random()*0xffffff<<0).toString(16);
+            color: '#FF3030'
         }
         var pointCollection = new BMap.PointCollection(pois, options);  // 初始化PointCollection
         pointCollection.addEventListener('click', function (e) {
@@ -171,7 +170,6 @@
     }
 		console.log(pois.length);
 	}
-
 	//展示一辆车的线
 	function showLine(){
 		
@@ -335,7 +333,6 @@
 				
 			}
 		}
-
 		if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
         var options = {
             size: BMAP_POINT_SIZE_SMALL,
