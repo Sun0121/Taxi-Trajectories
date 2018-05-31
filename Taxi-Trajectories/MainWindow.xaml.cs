@@ -21,6 +21,7 @@ namespace Taxi_Trajectories
             Map.Source = new Uri(Path + "\\Bmap.html");
             used = false;
             ptrCar.obtainPath(Path);
+            //MessageBox.Show(Path);
             carNum = 0;
         }
 
