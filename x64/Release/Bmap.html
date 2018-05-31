@@ -159,7 +159,7 @@
         var options = {
             size: BMAP_POINT_SIZE_SMALL,
             shape:BMAP_POINT_SHAPE_CIRCLE,
-            color: '#FF3030'
+            color: '#'+(Math.random()*0xffffff<<0).toString(16);
         }
         var pointCollection = new BMap.PointCollection(pois, options);  // 初始化PointCollection
         pointCollection.addEventListener('click', function (e) {
