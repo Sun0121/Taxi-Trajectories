@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible"content="IE=edge" />
 	<style type="text/css">
 	body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
 	#allmap {width: 100%; height:100%; overflow: hidden;}
@@ -48,7 +49,7 @@
 		<div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
 	</div>
 	<div id="main" style="display:inlint-block;width:100%;height:100%"></div>
-	<div id="echart" style="text-align:right;display:inlint-block;width:50%;height:60%"></div>
+	<div id="echart" style="text-align:right;display:inlint-block;width:100%;height:100%"></div>
 	<div>
 
 	</div>
@@ -61,7 +62,6 @@
 		<input type="button" value="区域关联分析1" onclick="showLL1()"/>
 		<input type="button" value="区域关联分析2" onclick="showLL2()"/>
 		<input type="button" value="显示曲线" onclick="showChart()"/>
-		<input type="button" value="显示区域范围的曲线" onclick=""/>
 	</div>
 	<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
 	<script type="text/javascript">
@@ -173,7 +173,8 @@
     
 		
     var overlays = [];
-	
+	// 判断是区域分析还是二
+	var judge;
 	//区域范围查找
 	var arr=new Array();
 	// 区域关联分析1
@@ -229,6 +230,7 @@
 	
 	function showLL1 () {
 		// console.log(arr0)
+		judge = 1;
 		var start = 223;
 		var end = 987;
 		var interval = 10;
@@ -251,6 +253,7 @@
 	}
 	
 	function showLL2 () {
+		judge = 2;
 		var start = 223;
 		var end = 987;
 		var interval = 10;
@@ -330,9 +333,26 @@
 	        data: [data2]
 	    }]
 	};
+	// 后端传给前端的函数
+	function trans(str) {
+		// 解析后端
+		// var str = '[{"data1":[[116455,39900],[222222,39900]]}]';
+		window.alert(str)
+		
+		var jsonDate=eval('('+str+')');
+		
+		// 添加海量点数据
+		
+		// console.log(jsonDate);
+		// console.log(jsonDate[0][0]);
+		// console.log(jsonDate[0].data1[0]);
+		// console.log(jsonDate[0].data1[1]);
+		data1 = jsonDate[0].data1[0];
+		data2 = jsonDate[0].data1[1];
+	}
 	function showChart(){
 		// 下面通过判断是进行区域关系一还是二
-		if (1) {
+		if (judge == 1) {
 			option.series = [{
 		        name: '出1',
 		        type: 'bar',
@@ -352,6 +372,19 @@
 		    }]
 		    option.legend = {
 	        	data:['出1','入1','出2','入2']
+	   		}
+		} else {
+			option.series = [{
+		        name: '出',
+		        type: 'bar',
+		        data: data1
+		    },{
+		        name: '入',
+		        type: 'bar',
+		        data: data2
+		    }]
+		    option.legend = {
+	        	data:['出','入']
 	   		}
 		}
 		// 使用刚指定的配置项和数据显示图表。

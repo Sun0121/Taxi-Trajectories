@@ -91,7 +91,7 @@ namespace Taxi_Trajectories
         
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            if (!isRoaded()) return;
+            //if (!isRoaded()) return;
             //int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
             //int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
             //int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
@@ -101,16 +101,17 @@ namespace Taxi_Trajectories
             //System.IO.File.WriteAllText(@"F:\test.txt", str);
             MessageBox.Show(str);
             Map.InvokeScript("createTable", new object[] { str });
-            Map.InvokeScript("showPoint", new object[] { str });
+            String strPoint = ptrCar.getCarCountString();
+            Map.InvokeScript("showPoint", new object[] { strPoint });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             if (!isRoaded()) return;
 
-            //String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
+            String str = ptrCar.relevance(0, 0, 0, 0, 0, 0, 0, 0, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
 
-            //Map.InvokeScript("showChart", new object[] { str });
+            Map.InvokeScript("trans", new object[] { str });
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
