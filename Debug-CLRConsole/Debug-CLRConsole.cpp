@@ -11,7 +11,7 @@ int main(array<System::String ^> ^args)
 	tmp.obtainPath("F:\\Document\\Visual Studio 2017\\Projects\\BigProject\\Taxi-Trajectories\\x64\\Release");
 	tmp.roadFromFile();
 	Console::WriteLine("start");
-	String ^ str = tmp.carCount(116336,39989,116529,39851, 56768,600000);
+	String ^ str = tmp.relevance(0, 0, 0, 0, 116336, 39989, 116529, 39851, 56768, 600000, 3600);
     Console::WriteLine(str);
     return 0;
 }
