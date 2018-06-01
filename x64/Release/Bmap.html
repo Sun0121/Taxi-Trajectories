@@ -5,7 +5,7 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<style type="text/css">
 	body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
-	#allmap {width: 100%; height:90%; overflow: hidden;}
+	#allmap {width: 100%; height:100%; overflow: hidden;}
 	#result {width:100%;font-size:12px;}
 	dl,dt,dd,ul,li{
 		margin:0;
@@ -36,8 +36,10 @@
 	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
 	
-	<script type="text/javascript" src="F://carData.js"></script>
-	
+	<!-- <script type="text/javascript" src="F://carData.js"></script> -->
+	<!-- echart -->
+	<script src="echarts.common.min.js"></script>
+	 
 	
 	<title>地图展示</title>
 </head>
@@ -45,10 +47,23 @@
 	<div id="allmap" style="overflow:hidden;zoom:1;position:relative;">	
 		<div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
 	</div>
+	<div id="main" style="display:inlint-block;width:100%;height:100%"></div>
+	<div id="echart" style="text-align:right;display:inlint-block;width:50%;height:60%"></div>
+	<div>
+
+	</div>
+	
+
+	
 	<div id="result">
 		<!--<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>-->
-		<input type="button" value="清除所有覆盖物" onclick="showAllLine()"/>
+		<input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
+		<input type="button" value="区域关联分析1" onclick="showLL1()"/>
+		<input type="button" value="区域关联分析2" onclick="showLL2()"/>
+		<input type="button" value="显示曲线" onclick="showChart()"/>
+		<input type="button" value="显示区域范围的曲线" onclick=""/>
 	</div>
+	<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
 	<script type="text/javascript">
 		
 	
@@ -59,18 +74,11 @@
 	
 	var pois = [];//记录点的数组
 	var carData="";
-		
-	function addPoint(x,y){
-		pois.push(new BMap.Point(x,y));
-		
-	}
 	
 	
 	//展示全部线
 	function showAllLine(car){
-		window.alert(car);
-        window.alert(car.length);
-	    
+	 
 		// 添加海量点数据
 		var size;
 		var carData=eval('('+car+')');
@@ -101,45 +109,17 @@
 				}
 			}
 		}
-		//console.log(pois.length);
 		
 	}
 	
 	
-	function getString(str){
-		
-			carData=carData.concat(str);
-			
-			
-	}
-		
-	
-	function deleteString(){
-		
-		carData="";
-	}
-	
-	//展示点,数组中存储了数据
+	//展示点
 	function showPoint(carData){
-		
-		/*
-		var options = {
-			//size: BMAP_POINT_SIZE_SMALLER,
-			size:BMAP_POINT_SIZE_SMALL,
-            shape: BMAP_POINT_SHAPE_CIRCLE,
-            color: '#FF3030'
-        }
-		var pointCollection = new BMap.PointCollection(pois, options);  // 初始化PointCollection
-		map.addOverlay(pointCollection);  // 添加Overlay
-		*/
+
 		
 		/*var carData = '[{"data":[[116510,39935],[116515,39910],[116470,39910],[116470,39920],[116470,39905],[116455,39905],[116505,39910],[116495,39910],[116455,39865],[116490,39875],[116500,39865],[116500,39860],[116495,39875],[116465,39880],[116455,39895],[116445,39905],[116440,39915],[116445,39925]]},{"data1":[[116440,39925],[116435,39930],[116435,39950],[116440,39950],[116440,39960],[116440,39955],[116445,39955],[116455,39950],[116455,39945],[116455,39930],[116455,39925],[116495,39915],[116495,39920],[116510,39925],[116505,39920],[116480,39920],[116475,39905],[116465,39900],[116455,39900]]}]';
 		*/
-		
-		
-		
 	
-		
 		var jsonDate=eval('('+carData+')');
 	
 		// 添加海量点数据
@@ -147,13 +127,12 @@
 		for(var i=0,l=jsonDate.length;i<l;i++){
 			for(var key in jsonDate[i]){
 				for(var j=0,ll=jsonDate[i][key].length;j<ll;j++){
-					console.log((jsonDate[i][key][j][0]/1000)+" "+(jsonDate[i][key][j][1]/1000)+'\n');
 					pois.push(new BMap.Point((jsonDate[i][key][j][0]/1000), (jsonDate[i][key][j][1]/1000)));
 				}
-				console.log("\n");
 				
 			}
 		}
+
 		if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
         var options = {
             size: BMAP_POINT_SIZE_SMALL,
@@ -168,91 +147,127 @@
     } else {
         alert('请在chrome、safari、IE8+以上浏览器查看本示例');
     }
-		console.log(pois.length);
-	}
-	//展示一辆车的线
-	function showLine(){
-		
-		var polyline =new BMap.Polyline(pois, {
-		//enableEditing: false,//是否启用线编辑，默认为false
-		enableClicking: false,//是否响应点击事件，默认为true
-		//icons:[icons],
-	    strokeWeight:1,//折线的宽度，以像素为单位
-	    strokeOpacity: 1,//折线的透明度，取值范围0 - 1
-		strokeColor:'#FF3030' //折线颜色
-	    });
-	    map.addOverlay(polyline); 
-	    console.log(pois.length);
 		
 	}
-	
+
+		
 	//清除点
 	function clearPoint(){
 		pois.length = 0;
 		map.clearOverlays();
 	}
 	
-    
-    var overlays = [];//
 		
-	var data=new Array();
+	function clearAll() {
+		
+		arr=[];
+	    arr0 = [];
+	    arr1 = [];
+	    arr2 = [];
+	    for(var i = 0; i < overlays.length; i++){
+	        // 矩形获取的经纬度是从左上角顺时针获取
+	        map.removeOverlay(overlays[i]);
+	    }
+		//overlays.length = 0 
+	};
+    
+		
+    var overlays = [];
 	
+	//区域范围查找
+	var arr=new Array();
+	// 区域关联分析1
+	var arr0 = new Array();
+		
+	// 区域关联分析2
+	var arr1 = new Array();
+	var arr2 = new Array();
+		
+	// 区别区域关系1和区域关系2的值
+	var count = 1;
+		
 	var overlaycomplete = function(e){
 		
-		var arr=new Array();
 		var j=0;
         overlays.push(e.overlay);
 		
         var path = e.overlay.getPath();//Array<Point> 返回多边型的点数组
         for(var i=0;i<path.length;i++){
-            console.log("lng:"+path[i].lng+"\n lat:"+path[i].lat);
-			if((i%2)==0)
+            //console.log("lng:"+path[i].lng+"\n lat:"+path[i].lat);
+			if(i==0||i==2)
 			{
 				arr[j]=path[i].lng;
+				//console.log(arr[j]);
 				j++;
-				//console.log("1. "+arr[j]);
-				
 				arr[j]=path[i].lat;
+				//console.log(arr[j]);
 				j++;
-				//console.log("2. "+arr[j]);
-				
+			
 			}
         }
-		data=arr;
+        var fso;
+		try { 
+			fso=new ActiveXObject("Scripting.FileSystemObject"); 
+		} catch (e) { 
+		alert("当前浏览器不支持");
+		return;
+		} 
+		var f1 = fso.createtextfile("D:\\3.txt",true);
+
+		f1.write(arr[0]+" "+arr[1]+" "+arr[2]+" "+arr[3]); 
+
+        arr0 = arr;
+		// yxz
+		if (count%2){
+			arr1 = arr.concat();
+			count++;
+		} else {
+			arr2 = arr.concat();
+		}
 		
     };
 	
-	//返回包含所画框的两个点的经纬度
-	function backPoint(){
-		backlng1();
-		backlat1();
-		backlng2();
-		backlat2();
-       return data;
-		
-	}
-	//返回左上角的点的经度
-	function backlng1(){
-		
-		return data[0]
+	function showLL1 () {
+		// console.log(arr0)
+		var start = 223;
+		var end = 987;
+		var interval = 10;
+		//window.external.area1(arr0[0],arr0[1],arr0[2],arr0[3],start,end,interval);
+		//alert(arr0[0],arr0[1],arr0[2],arr0[3],start,end,interval);
+		alert(arr0[0]);
+		alert(arr0[1]);
+		alert(arr0[2]);
+		alert(arr0[3]);
+		var fso;
+		try { 
+			fso=new ActiveXObject("Scripting.FileSystemObject"); 
+		} catch (e) { 
+		alert("当前浏览器不支持");
+		return;
+		} 
+		var f1 = fso.createtextfile("D:\\1.txt",true);
+
+		f1.write(arr0[0]+" "+arr0[1]+" "+arr0[2]+" "+arr0[3]+" "); 
 	}
 	
-	//返回左上角的点的纬度	
-	function backlat1(){
-		
-		return data[1];
-	}
-		
-	//返回右下角的点的经度	
-	function backlng2(){
-		
-		return data[2]
-	}
-		
-	//返回右下角的点的纬度
-	function backlat2(){
-		
-		return data[3];
+	function showLL2 () {
+		var start = 223;
+		var end = 987;
+		var interval = 10;
+		//window.external.area2(arr1[0],arr1[1],arr1[2],arr1[3],arr2[0],arr2[1],arr2[2],arr2[3],start,end,interval);
+
+		var fso;
+		try { 
+			fso=new ActiveXObject("Scripting.FileSystemObject"); 
+		} catch (e) { 
+		alert("当前浏览器不支持");
+		return;
+		} 
+		var f1 = fso.createtextfile("D:\\2.txt",true);
+
+		f1.write(arr1[0]+" "+arr1[1]+" "+arr1[2]+" "+arr1[3]+" "+arr2[0]+" "+arr2[1]+" "+arr2[2]+" "+arr2[3]+" "); 
+		//returnleftlong(); 
+
 	}
 	
     var styleOptions = {
@@ -284,71 +299,268 @@
 	 //添加鼠标绘制工具监听事件，用于获取绘制结果
     drawingManager.addEventListener('overlaycomplete', overlaycomplete);
 		
-    function clearAll() {
-		for(var i = 0; i < overlays.length; i++){
-            map.removeOverlay(overlays[i]);
-        }
-        overlays.length = 0   
-    }
-	
-	
-	
-	
-	//第二种解析方式	
-	function jsonTest1(str){
-		
-		var str='[{"type":"1","switch":"1","startTime":"1405405793","endTime":"1405664993","signDays":"3","awardCoin":"100000","desc":"desc"},{"type":"2","startTime":"1","endTime":"0","dropRate":"20","dropNumRate":"20"}]';
-		
-		var test=eval('('+str+')');
-		
-		console.log(test.length+'\n');
-		
-		for(var i=0,l=test.length;i<l;i++){
-			for(var key in test[i]){
-				console.log(key+" "+test[i][key]+" ");
-				//console.log(typeof(test[i][key])+"\n");
-			}
-			console.log('\n');   
+	// echart
+	var myChart = echarts.init(document.getElementById('echart'));
+	var data1 = ["11","22","33","44","55","66"];
+	var data2 = [5, 20, 36, 10, 10, 20];
+	var time = [2,5,7,8,26,40];
+
+	// 指定图表的配置项和数据
+	var option = {
+	    title: {
+	        text: '一张图'
+	    },
+	    tooltip: {},
+	    legend: {
+	        data:['出1','入1']
+	    },
+	    xAxis: {
+	        data: time
+	    },
+	    yAxis: {
+
+	    },
+	    series: [{
+	        name: '出',
+	        type: 'line',
+	        data: [data1]
+	    },{
+	        name: '入',
+	        type: 'line',
+	        data: [data2]
+	    }]
+	};
+	function showChart(){
+		// 下面通过判断是进行区域关系一还是二
+		if (1) {
+			option.series = [{
+		        name: '出1',
+		        type: 'bar',
+		        data: data1
+		    },{
+		        name: '入1',
+		        type: 'bar',
+		        data: data2
+		    },{
+		        name: '出2',
+		        type: 'bar',
+		        data: data1
+		    },{
+		        name: '入2',
+		        type: 'bar',
+		        data: data2
+		    }]
+		    option.legend = {
+	        	data:['出1','入1','出2','入2']
+	   		}
 		}
+		// 使用刚指定的配置项和数据显示图表。
+		myChart.setOption(option)
+		// 点击显示曲线之后调用c#函数获得carData格式的值
+		// var returnData = window.external.ShowBulletin();
+		// // 出入 时间间隔
+		// var carData = '[{"data":[33,44,55,66]},{"data":[11,25,12,32]},{"time":[33,44,55,66]}]';
+		// var jsonDate=eval('('+carData+')');
+		// var data11 = jsonDate[0].data;
+		// var data22 = jsonDate[1].data;
+		// var time1 = jsonDate[2].time;
+		// data1 = data11;
+		// data2 = data22;
+		// time = time1;
+
 	}
-	
-	
 		
-	function createHailiangPoint(){
+		var X=new Array();//x坐标
+		var Y=new Array();//y坐标
 		
-		var carData = '[{"data":[[116.51,39.935],[116.515,39.91],[116.47,39.91],[116.47,39.92],[116.47,39.905],[116.455,39.905],[116.505,39.91],[116.495,39.91],[116.455,39.865],[116.49,39.875],[116.5,39.865],[116.5,39.86],[116.495,39.875],[116.465,39.88],[116.455,39.895],[116.445,39.905],[116.44,39.915],[116.445,39.925]]},{"data1":[[116.44,39.925],[116.435,39.93],[116.435,39.95],[116.44,39.95],[116.44,39.96],[116.44,39.955],[116.445,39.955],[116.455,39.95],[116.455,39.945],[116.455,39.93],[116.455,39.925],[116.495,39.915],[116.495,39.92],[116.51,39.925],[116.505,39.92],[116.48,39.92],[116.475,39.905],[116.465,39.9],[116.455,39.9],[116.45,39.905],[116.44,39.91],[116.45,39.875],[116.47,39.87],[116.465,39.87]]}]';
-	
-		
-		var jsonDate=eval('('+carData+')');
-	
-		// 添加海量点数据
-		
-		for(var i=0,l=jsonDate.length;i<l;i++){
+		//一个一个数据的传
+		function createX(str){
+			
+			
+			// var str='[{"point":[[213066,116],[216666,200],[220266,222],[223866,188],[227466,173],[231066,183],[234666,197],[238266,173],[241866,178],[245466,184],[249066,171],[252666,131],[253066,87]]}]';
+			
+			var start=new Array();
+			
+			var jsonDate=eval('('+str+')');
+			for(var i=0,l=jsonDate.length;i<l;i++){
 			for(var key in jsonDate[i]){
 				for(var j=0,ll=jsonDate[i][key].length;j<ll;j++){
-					console.log(jsonDate[i][key][j][0]+" "+jsonDate[i][key][j][1]+'\n');
-					pois.push(new BMap.Point(jsonDate[i][key][j][0], jsonDate[i][key][j][1]));
+					start.push(jsonDate[i][key][j][0]);
 				}
-				console.log("\n");
+				}
+			}
+			for(var i=0;i<start.length;i++){
 				
+				var second;
+		        var minute;
+		        var hour;
+		        var day;
+		        var mounth;
+		        var year;
+		        var all;
+		    
+			//处理时间
+				second=start[i]%60;
+		        minute=((start[i]-start[i]%60)%3600)/60;
+		        hour=((start[i]-start[i]%60-((start[i]-start[i]%60)%3600))%86400)/3600;
+		        day=((start[i]-start[i]%60-((start[i]-start[i]%60)%3600)-((start[i]-start[i]%60-((start[i]-start[i]%60)%3600))%86400))/86400)+2;
+		        mounth=2;
+			    year=2008
+		        all='';
+			    all=all+year+'-0'+mounth+'-0'+day+'-';
+				
+				if(hour<10)
+				{
+					all=all+"0"+hour
+		        }else{
+			        all=all+hour;
+		        }
+		
+		        if(minute<10)
+		        {
+			        all=all+ ":0"+minute;	
+			   
+		        }else{
+			        all=all+":"+minute;	
+			   
+		        }
+		
+		        if(second<10)
+		       {
+			       all=all+":0"+second;		
+		       }else{
+			       all=all+":"+second;	
+		       }
+			
+			     X.push(all);
+			     
 			}
 		}
-		if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
-        var options = {
-            size: BMAP_POINT_SIZE_SMALL,
-            shape:BMAP_POINT_SHAPE_CIRCLE,
-            color: '#FF3030'
-        }
-        var pointCollection = new BMap.PointCollection(pois, options);  // 初始化PointCollection
-        pointCollection.addEventListener('click', function (e) {
-          alert('单击点的坐标为：' + e.point.lng + ',' + e.point.lat);  // 监听点击事件
-        });
-        map.addOverlay(pointCollection);  // 添加Overlay
-    } else {
-        alert('请在chrome、safari、IE8+以上浏览器查看本示例');
-    }
 		
-	}
+		
+		//一个一个数据的传
+		function createY(str){
+			
+			
+			// var str='[{"point":[[213066,116],[216666,200],[220266,222],[223866,188],[227466,173],[231066,183],[234666,197],[238266,173],[241866,178],[245466,184],[249066,171],[252666,131],[253066,87]]}]';
+			
+			
+			var start=new Array();
+			
+			var jsonDate=eval('('+str+')');
+			
+			for(var i=0,l=jsonDate.length;i<l;i++){
+			for(var key in jsonDate[i]){
+				for(var j=0,ll=jsonDate[i][key].length;j<ll;j++){
+					start.push(jsonDate[i][key][j][1]);
+				}
+				}
+			}
+			for(var i=0;i<start.length;i++){
+				
+				Y.push(start[i]);
+			}
+
+	    }
+		
+		
+		//创建图表
+		function createTable(str){
+		
+		createX(str);
+		createY(str);
+		var XCopy=new Array();
+		var YCopy=new Array();
+		// console.log(X);
+		// console.log(Y);
+		//alert("位置信息： " + );
+		XCopy=XCopy.concat(X);
+		YCopy=YCopy.concat(Y);
+		X.splice(0,X.length);
+		Y.splice(0,Y.length);
+		
+	
+		// 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main')); 
+                
+                var option = {
+					title :{
+						text: '区域范围查找'
+                        
+					},
+					tooltip : {
+                        trigger: 'axis'
+					},
+                    legend: {
+						data:['出租车数目']
+                    },
+					toolbox: {
+                        show : true,
+                        feature : {
+							mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+						}
+					},
+					calculable : true,
+					xAxis : [
+						{
+							type : 'category',
+                            boundaryGap : false,
+                            data :XCopy
+						}
+					],
+                    yAxis : [
+						{
+                             type : 'value',
+                             axisLabel : {
+                             formatter: '{value}'
+							 }
+						}
+					],
+                    series : [
+						{
+							name:'出租车数目',
+                            type:'line',
+                            data:YCopy,
+                            markPoint : {
+								data : [
+									{type : 'max', name: '最大值'},
+                                    {type : 'min', name: '最小值'}
+								]
+							},
+							markLine : {
+								data : [
+									{type : 'average', name: '平均值'}
+								]
+							}
+						}
+					]
+				};
+                    
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+		
+		}
+
 </script>
 </body>
 </html>
