@@ -92,48 +92,39 @@ namespace Taxi_Trajectories
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             if (!isRoaded()) return;
-            int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
-            int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
-            int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
-            int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
-            String str = ptrCar.carCount(p0_x,p0_y,p1_x,p1_y,int.Parse(time_0.Text), int.Parse(time_1.Text));
+            //int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
+            //int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
+            //int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
+            //int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
+            String str = ptrCar.carCount(0, 0, 0, 0, int.Parse(time_0.Text), int.Parse(time_1.Text));
             int carCountNum = ptrCar.getCarCountNum();
             //System.IO.File.WriteAllText(@"F:\test.txt", str);
-            Map.InvokeScript("showPoint", new object[] { str, carCountNum });
+            MessageBox.Show(str);
+            Map.InvokeScript("createTable", new object[] { str });
+            Map.InvokeScript("showPoint", new object[] { str });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             if (!isRoaded()) return;
-            int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
-            int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
-            int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
-            int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
-            int p2_x = (int)(long.Parse(pos_2.Text) / 100000);
-            int p2_y = (int)(long.Parse(pos_2.Text) % 100000);
-            int p3_x = (int)(long.Parse(pos_3.Text) / 100000);
-            int p3_y = (int)(long.Parse(pos_3.Text) % 100000);
 
-            String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
+            //String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
 
-            Map.InvokeScript("showChart", new object[] { str });
+            //Map.InvokeScript("showChart", new object[] { str });
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             if (!isRoaded()) return;
-            int p0_x = (int)(long.Parse(pos_0.Text) / 100000);
-            int p0_y = (int)(long.Parse(pos_0.Text) % 100000);
-            int p1_x = (int)(long.Parse(pos_1.Text) / 100000);
-            int p1_y = (int)(long.Parse(pos_1.Text) % 100000);
-            int p2_x = (int)(long.Parse(pos_2.Text) / 100000);
-            int p2_y = (int)(long.Parse(pos_2.Text) % 100000);
-            int p3_x = (int)(long.Parse(pos_3.Text) / 100000);
-            int p3_y = (int)(long.Parse(pos_3.Text) % 100000);
 
-            String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
+            //String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
 
-            Map.InvokeScript("showChart", new object[] { str });
+            //Map.InvokeScript("showChart", new object[] { str });
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Map.InvokeScript("clearPoint");
         }
     }
 }

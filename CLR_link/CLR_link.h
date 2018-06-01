@@ -34,6 +34,10 @@ namespace CLR_link {
 			String ^ str = gcnew String(ptr->carCount(Coordinate({ posa_x,posa_y }), Coordinate({ posb_x,posb_y }), timeStart, timeEnd).c_str());
 			return str;
 		}
+		String ^ getCarCountString() {
+			String ^ str = gcnew String(ptr->getCarCountString().c_str());
+			return str;
+		}
 
 		void obtainPath(String ^ pa) {
 			char *path = (char *)(Marshal::StringToHGlobalAnsi(pa)).ToPointer();
