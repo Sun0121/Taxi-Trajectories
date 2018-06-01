@@ -28,15 +28,11 @@
         <Button Content="展示" Margin="0,28,48,0" Click="Button_Click" RenderTransformOrigin="0.556,4.209" Width="66" HorizontalAlignment="Right" Height="26" VerticalAlignment="Top"/>
         <WebBrowser x:Name="Map"  Margin="48,104,48,39"/>
         <Button Content="文件加载" Margin="48,28,0,0" Click="Button_Click_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
-        <TextBox x:Name="Id_1" Margin="605,28,219,0" TextWrapping="Wrap" Height="26" VerticalAlignment="Top" FontSize="20" Text="1" RenderTransformOrigin="1.11,1.346"/>
+        <TextBox x:Name="Id_1" Margin="0,28,219,0" TextWrapping="Wrap" Height="26" VerticalAlignment="Top" FontSize="20" Text="1" RenderTransformOrigin="1.11,1.346" HorizontalAlignment="Right" Width="68"/>
         <TextBox x:Name="Id_2"  HorizontalAlignment="Right" Margin="0,28,138,0" TextWrapping="Wrap" Width="68" Height="26" VerticalAlignment="Top" FontSize="20" Text="10357"/>
         <TextBox x:Name="time_0" HorizontalAlignment="Left" Height="26" Margin="137,28,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="61"/>
         <TextBox x:Name="time_1" HorizontalAlignment="Left" Height="26" Margin="220,28,0,0" TextWrapping="Wrap" Text="600000" VerticalAlignment="Top" Width="54"/>
-        <TextBox x:Name="pos_0" HorizontalAlignment="Left" Height="26" Margin="299,28,0,0" TextWrapping="Wrap" Text="11600039000" VerticalAlignment="Top" Width="85"/>
-        <TextBox x:Name="pos_1" HorizontalAlignment="Left" Height="26" Margin="408,28,0,0" TextWrapping="Wrap" Text="11700041000" VerticalAlignment="Top" Width="90"/>
         <Button Content="显示" HorizontalAlignment="Left" Height="26" Margin="520,28,0,0" VerticalAlignment="Top" Width="66" Click="Button_Click_4"/>
-        <TextBox x:Name="pos_2" HorizontalAlignment="Left" Height="23" Margin="299,63,0,0" TextWrapping="Wrap" Text="11600039000" VerticalAlignment="Top" Width="85"/>
-        <TextBox x:Name="pos_3" HorizontalAlignment="Left" Height="23" Margin="408,63,0,0" TextWrapping="Wrap" Text="11700042000" VerticalAlignment="Top" Width="90"/>
         <Button Content="关联分析1" HorizontalAlignment="Left" Height="23" Margin="520,63,0,0" VerticalAlignment="Top" Width="66" Click="Button_Click_3"/>
         <TextBox x:Name="interval" HorizontalAlignment="Right" Height="23" Margin="0,63,658,0" TextWrapping="Wrap" Text="3600" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.212,0.457"/>
         <Button Content="关联分析2" HorizontalAlignment="Left" Height="23" Margin="605,63,0,0" VerticalAlignment="Top" Width="68" Click="Button_Click_5"/>

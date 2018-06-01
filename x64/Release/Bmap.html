@@ -36,7 +36,7 @@
 	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
 	
-	<script type="text/javascript" src="F://carData.js"></script>
+	<!-- <script type="text/javascript" src="F://carData.js"></script> -->
 	<!-- echart -->
 	<script src="echarts.common.min.js"></script>
 	 
@@ -45,10 +45,10 @@
 </head>
 <body>
 	<div id="allmap" style="overflow:hidden;zoom:1;position:relative;">	
-		<div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+		<div id="map" style="height:40%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+		<div id="echart" style="width:100%;height:30%"></div>
+		<div id="main" style="width:100%;height:30%"></div>
 	</div>
-	<div id="main" style="display:inlint-block;width:50%;height:50%"></div>
-	<div id="echart" style="text-align:right;display:inlint-block;width:50%;height:60%"></div>
 	<div>
 
 	</div>
@@ -73,6 +73,7 @@
     map.enableScrollWheelZoom(true);//开启鼠标滚轮缩放
 	
 	var pois = [];//记录点的数组
+	var carData="";
 	
 	
 	//展示全部线
@@ -95,10 +96,12 @@
 					size=carData[i][key][j][4];
 					//window.alert(size);
 					var polyline =new BMap.Polyline(pois, {
-		            enableClicking: false,
-			       strokeWeight:1,
-		           strokeOpacity: 1,
-		           strokeColor:'#FF0000'
+		           //enableEditing: false,//是否启用线编辑，默认为false
+		            enableClicking: false,//是否响应点击事件，默认为true
+		           //icons:[icons],
+			       strokeWeight:1,//折线的宽度，以像素为单位
+		           strokeOpacity: 1,//折线的透明度，取值范围0 - 1
+		           strokeColor:'#FF0000' //折线颜色
 					});
 			       polyline.setStrokeWeight(3);
 			       map.addOverlay(polyline); 
@@ -114,8 +117,8 @@
 	function showPoint(carData){
 
 		
-		/*var carData = '[{"data":[[116510,39935],[116515,39910],[116470,39910],[116470,39920],[116470,39905],[116455,39905],[116505,39910],[116495,39910],[116455,39865],[116490,39875],[116500,39865],[116500,39860],[116495,39875],[116465,39880],[116455,39895],[116445,39905],[116440,39915],[116445,39925]]},{"data1":[[116440,39925],[116435,39930],[116435,39950],[116440,39950],[116440,39960],[116440,39955],[116445,39955],[116455,39950],[116455,39945],[116455,39930],[116455,39925],[116495,39915],[116495,39920],[116510,39925],[116505,39920],[116480,39920],[116475,39905],[116465,39900],[116455,39900]]}]';*/
-		
+		/*var carData = '[{"data":[[116510,39935],[116515,39910],[116470,39910],[116470,39920],[116470,39905],[116455,39905],[116505,39910],[116495,39910],[116455,39865],[116490,39875],[116500,39865],[116500,39860],[116495,39875],[116465,39880],[116455,39895],[116445,39905],[116440,39915],[116445,39925]]},{"data1":[[116440,39925],[116435,39930],[116435,39950],[116440,39950],[116440,39960],[116440,39955],[116445,39955],[116455,39950],[116455,39945],[116455,39930],[116455,39925],[116495,39915],[116495,39920],[116510,39925],[116505,39920],[116480,39920],[116475,39905],[116465,39900],[116455,39900]]}]';
+		*/
 	
 		var jsonDate=eval('('+carData+')');
 	
@@ -190,40 +193,81 @@
 		
         var path = e.overlay.getPath();//Array<Point> 返回多边型的点数组
         for(var i=0;i<path.length;i++){
-            console.log("lng:"+path[i].lng+"\n lat:"+path[i].lat);
-			if((i%2)==0)
+            //console.log("lng:"+path[i].lng+"\n lat:"+path[i].lat);
+			if(i==0||i==2)
 			{
 				arr[j]=path[i].lng;
+				//console.log(arr[j]);
 				j++;
 				arr[j]=path[i].lat;
+				//console.log(arr[j]);
 				j++;
 			
 			}
         }
+        var fso;
+		try { 
+			fso=new ActiveXObject("Scripting.FileSystemObject"); 
+		} catch (e) { 
+		alert("当前浏览器不支持");
+		return;
+		} 
+		var f1 = fso.createtextfile("D:\\3.txt",true);
 
+		f1.write(arr[0]+" "+arr[1]+" "+arr[2]+" "+arr[3]); 
+
+        arr0 = arr;
 		// yxz
 		if (count%2){
-			arr0 = arr;
-			arr1 = arr;
+			arr1 = arr.concat();
 			count++;
 		} else {
-			arr2 = arr;
+			arr2 = arr.concat();
 		}
 		
     };
 	
 	function showLL1 () {
-		console.log(arr0)
+		// console.log(arr0)
 		var start = 223;
 		var end = 987;
 		var interval = 10;
-		window.external.area1(arr0[0],arr0[1],arr0[2],arr0[3],start,end,interval);
+		//window.external.area1(arr0[0],arr0[1],arr0[2],arr0[3],start,end,interval);
+		//alert(arr0[0],arr0[1],arr0[2],arr0[3],start,end,interval);
+		alert(arr0[0]);
+		alert(arr0[1]);
+		alert(arr0[2]);
+		alert(arr0[3]);
+		var fso;
+		try { 
+			fso=new ActiveXObject("Scripting.FileSystemObject"); 
+		} catch (e) { 
+		alert("当前浏览器不支持");
+		return;
+		} 
+		var f1 = fso.createtextfile("D:\\1.txt",true);
+
+		f1.write(arr0[0]+" "+arr0[1]+" "+arr0[2]+" "+arr0[3]+" "); 
 	}
+	
 	function showLL2 () {
 		var start = 223;
 		var end = 987;
 		var interval = 10;
-		window.external.area2(arr1[0],arr1[1],arr1[2],arr1[3],arr2[0],arr2[1],arr2[2],arr2[3],start,end,interval);
+		//window.external.area2(arr1[0],arr1[1],arr1[2],arr1[3],arr2[0],arr2[1],arr2[2],arr2[3],start,end,interval);
+
+		var fso;
+		try { 
+			fso=new ActiveXObject("Scripting.FileSystemObject"); 
+		} catch (e) { 
+		alert("当前浏览器不支持");
+		return;
+		} 
+		var f1 = fso.createtextfile("D:\\2.txt",true);
+
+		f1.write(arr1[0]+" "+arr1[1]+" "+arr1[2]+" "+arr1[3]+" "+arr2[0]+" "+arr2[1]+" "+arr2[2]+" "+arr2[3]+" "); 
+		//returnleftlong(); 
+
 	}
 	
     var styleOptions = {
@@ -264,7 +308,7 @@
 	// 指定图表的配置项和数据
 	var option = {
 	    title: {
-	        text: '车流量'
+	        text: '一张图'
 	    },
 	    tooltip: {},
 	    legend: {
@@ -333,7 +377,7 @@
 		function createX(str){
 			
 			
-			/*var str='[{"point":[[213066,116],[216666,200],[220266,222],[223866,188],[227466,173],[231066,183],[234666,197],[238266,173],[241866,178],[245466,184],[249066,171],[252666,131],[253066,87]]}]';*/
+			// var str='[{"point":[[213066,116],[216666,200],[220266,222],[223866,188],[227466,173],[231066,183],[234666,197],[238266,173],[241866,178],[245466,184],[249066,171],[252666,131],[253066,87]]}]';
 			
 			var start=new Array();
 			
@@ -359,8 +403,7 @@
 				second=start[i]%60;
 		        minute=((start[i]-start[i]%60)%3600)/60;
 		        hour=((start[i]-start[i]%60-((start[i]-start[i]%60)%3600))%86400)/3600;
-		        day=((start[i]-start[i]%60-((start[i]-start[i]%60)%3600)-
-					  ((start[i]-start[i]%60-((start[i]-start[i]%60)%3600))%86400))/86400)+2;
+		        day=((start[i]-start[i]%60-((start[i]-start[i]%60)%3600)-((start[i]-start[i]%60-((start[i]-start[i]%60)%3600))%86400))/86400)+2;
 		        mounth=2;
 			    year=2008
 		        all='';
@@ -399,7 +442,7 @@
 		function createY(str){
 			
 			
-			/*var str='[{"point":[[213066,116],[216666,200],[220266,222],[223866,188],[227466,173],[231066,183],[234666,197],[238266,173],[241866,178],[245466,184],[249066,171],[252666,131],[253066,87]]}]';*/
+			// var str='[{"point":[[213066,116],[216666,200],[220266,222],[223866,188],[227466,173],[231066,183],[234666,197],[238266,173],[241866,178],[245466,184],[249066,171],[252666,131],[253066,87]]}]';
 			
 			
 			var start=new Array();
@@ -428,6 +471,9 @@
 		createY(str);
 		var XCopy=new Array();
 		var YCopy=new Array();
+		// console.log(X);
+		// console.log(Y);
+		//alert("位置信息： " + );
 		XCopy=XCopy.concat(X);
 		YCopy=YCopy.concat(Y);
 		X.splice(0,X.length);
