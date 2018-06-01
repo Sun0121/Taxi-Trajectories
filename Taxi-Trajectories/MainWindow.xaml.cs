@@ -102,7 +102,7 @@ namespace Taxi_Trajectories
             MessageBox.Show(str);
             Map.InvokeScript("createTable", new object[] { str });
             String strPoint = ptrCar.getCarCountString();
-            Map.InvokeScript("showPoint", new object[] { strPoint });
+            //Map.InvokeScript("showPoint", new object[] { strPoint });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
