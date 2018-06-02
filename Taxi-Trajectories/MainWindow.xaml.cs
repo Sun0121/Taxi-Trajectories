@@ -102,30 +102,41 @@ namespace Taxi_Trajectories
             MessageBox.Show(str);
             Map.InvokeScript("createTable", new object[] { str });
             String strPoint = ptrCar.getCarCountString();
-            Map.InvokeScript("showPoint", new object[] { strPoint });
+            //Map.InvokeScript("showPoint", new object[] { strPoint });
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             if (!isRoaded()) return;
 
-            String str = ptrCar.relevance(0, 0, 0, 0, 0, 0, 0, 0, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
-
-            Map.InvokeScript("trans", new object[] { str });
+            ptrCar.relevance(0, 0, 0, 0, 0, 0, 0, 0, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
+            String strOut = ptrCar.getTranAnswerOutString();
+            //System.IO.File.WriteAllText(@"F:\testout.txt", strOut);
+            String strIn = ptrCar.getTranAnswerInString();
+            //System.IO.File.WriteAllText(@"F:\testin.txt", strIn);
+            Map.InvokeScript("createTable2", new object[] { strOut, strIn });
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             if (!isRoaded()) return;
 
-            //String str = ptrCar.relevance(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
-
-            //Map.InvokeScript("showChart", new object[] { str });
+            ptrCar.inOut(0, 0, 0, 0, int.Parse(time_0.Text), int.Parse(time_1.Text), int.Parse(interval.Text));
+            String strOut = ptrCar.getTranAnswerOutString();
+            //System.IO.File.WriteAllText(@"F:\testout.txt", strOut);
+            String strIn = ptrCar.getTranAnswerInString();
+            //System.IO.File.WriteAllText(@"F:\testin.txt", strIn);
+            Map.InvokeScript("showChart", new object[] { strOut, strIn });
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             Map.InvokeScript("clearPoint");
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -340,7 +340,7 @@
 		window.alert(str)
 		
 		var jsonDate=eval('('+str+')');
-		
+		window.alert(jsonDate)
 		// 添加海量点数据
 		
 		// console.log(jsonDate);
@@ -498,6 +498,126 @@
 		
 		
 		//创建图表
+		function createTable2(str1,str2){
+		
+		var XCopy=new Array();
+		var YCopy=new Array();
+		var Y1Copy=new Array();
+		
+		createX(str1);
+		XCopy=XCopy.concat(X);
+		X.splice(0,X.length);
+		
+		createY(str1);
+		YCopy=YCopy.concat(Y);
+		Y.splice(0,Y.length);
+		
+		createY(str2);
+        Y1Copy=Y1Copy.concat(Y);
+		Y.splice(0,Y.length);
+		// console.log(X);
+		// console.log(Y);
+		//alert("位置信息： " + );
+
+
+	
+		// 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main')); 
+                
+                var option = {
+					title :{
+						text: '区域范围查找'
+                        
+					},
+					tooltip : {
+                        trigger: 'axis'
+					},
+                    legend: {
+						data:['出租车数目']
+                    },
+					toolbox: {
+                        show : true,
+                        feature : {
+							mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+						}
+					},
+					calculable : true,
+					xAxis : [
+						{
+							type : 'category',
+                            boundaryGap : false,
+                            data :XCopy
+						}
+					],
+                    yAxis : [
+						{
+                             type : 'value',
+                             axisLabel : {
+                             formatter: '{value}'
+							 }
+						}
+					],
+                    series : [
+						{
+							name:'出租车数目',
+                            type:'line',
+                            data:YCopy,
+                            markPoint : {
+								data : [
+									{type : 'max', name: '最大值'},
+                                    {type : 'min', name: '最小值'}
+								]
+							},
+							markLine : {
+								data : [
+									{type : 'average', name: '平均值'}
+								]
+							}
+						},
+						{
+							name:'出租车数目',
+                            type:'line',
+                            data:Y1Copy,
+                            markPoint : {
+								data : [
+									{type : 'max', name: '最大值'},
+                                    {type : 'min', name: '最小值'}
+								]
+							},
+							markLine : {
+								data : [
+									{type : 'average', name: '平均值'}
+								]
+							}
+						},
+					]
+				};
+                    
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+		
+		}
+		
 		function createTable(str){
 		
 		createX(str);

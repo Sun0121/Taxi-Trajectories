@@ -47,15 +47,23 @@ namespace CLR_link {
 		int getCarCountNum() {
 			return ptr->carCountNum;
 		}
-		String ^ relevance(int posa_1_x, int posa_1_y, int posb_1_x, int posb_1_y, int posa_2_x,
+		void relevance(int posa_1_x, int posa_1_y, int posb_1_x, int posb_1_y, int posa_2_x,
 			int posa_2_y, int posb_2_x, int posb_2_y, int timeStart, int timeEnd, int interval) {
-			String ^ str = gcnew String(ptr->relevance(Coordinate({ posa_1_x ,posa_1_y }), Coordinate({ posb_1_x ,posb_1_y }),
-				Coordinate({ posa_2_x ,posa_2_y }), Coordinate({ posb_2_x ,posb_2_y }), timeStart, timeEnd, interval).c_str());
+			ptr->relevance(Coordinate({ posa_1_x ,posa_1_y }), Coordinate({ posb_1_x ,posb_1_y }),
+				Coordinate({ posa_2_x ,posa_2_y }), Coordinate({ posb_2_x ,posb_2_y }), timeStart, timeEnd, interval);
+			return;
+		}
+		void inOut(int posa_x, int posa_y, int posb_x, int posb_y, int timeStart, int timeEnd, int interval) {
+			ptr->inOut(Coordinate({ posa_x ,posa_y }), Coordinate({ posb_x ,posb_y }), 
+				timeStart, timeEnd, interval);
+			return;
+		}
+		String ^ getTranAnswerOutString() {
+			String ^ str = gcnew String(ptr->getTranAnswerOutString().c_str());
 			return str;
 		}
-		String ^ inOut(int posa_x, int posa_y, int posb_x, int posb_y, int timeStart, int timeEnd, int interval) {
-			String ^ str = gcnew String(ptr->inOut(Coordinate({ posa_x ,posa_y }), Coordinate({ posb_x ,posb_y }), 
-				timeStart, timeEnd, interval).c_str());
+		String ^ getTranAnswerInString() {
+			String ^ str = gcnew String(ptr->getTranAnswerInString().c_str());
 			return str;
 		}
 
